@@ -2,10 +2,11 @@ import "./Auth.css";
 
 //components
 import { Link } from "react-router-dom";
+import Message from "../../components/Message";
 
 //hooks
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 //redux
 import { register, reset } from "../../slices/authSlice";
@@ -18,7 +19,7 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
-  // const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -69,7 +70,9 @@ const Register = () => {
           onChange={(e) => setConfirmPassword(e.target.value)}
           value={confirmPassword || ""}
         />
-        <input type="submit" value="Cadastrar" />
+        {!loading && <input type="submit" value="Cadastrar" />}
+        {loading && <input type="submit" value="Aguarde..." disabled />}
+        {error && <Message msg={error} type="error" />}
       </form>
       <p>
         Ja tem conta? <Link to="/login">Clique aqui.</Link>
